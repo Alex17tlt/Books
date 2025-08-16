@@ -1,7 +1,10 @@
 from fastapi import FastAPI
-from books.books_list import Book, books
+from app.routes import books
+import uvicorn
 
 app = FastAPI()
+
+app.include_router(books.router)
 
 @app.get('/')
 def read_root():
@@ -11,10 +14,3 @@ def read_root():
     }
 
     return response
-
-@app.post('/book')
-def add_book(book: Book):
-
-    books.append(book)
-
-    return book

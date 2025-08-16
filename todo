@@ -1,0 +1,79 @@
+Great question—this is the real fun of APIs: seeing them in action!
+
+Here are the **main ways to check/test your `add` endpoint** in FastAPI:
+
+---
+
+## 1. **Use the Interactive API Docs ("Swagger UI")**
+
+- Run your app (with `uvicorn ...`)
+- **Open** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- Find your **POST `/add` (or `/books`, if using the RESTful convention)** endpoint.
+- Click it, then “Try it out”
+- Enter example book data in the JSON form. For example:
+    ```json
+    {
+      "id": 1,
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "price": 9.99
+    }
+    ```
+- Click **“Execute”**
+- Check the response!
+  If it returns the data (or a success message), it works.
+
+---
+
+## 2. **Use Curl in the Terminal**
+
+A command-line way to send HTTP requests (replace values as needed):
+
+```bash
+curl -X POST "http://127.0.0.1:8000/add" -H  "Content-Type: application/json" -d "{\"id\":1, \"title\":\"Hat\", \"author\":\"Seuss\", \"price\":5.99}"
+```
+
+You should get a JSON response back.
+
+---
+
+## 3. **Use a Tool Like Postman or HTTPie**
+
+- [Postman](https://www.postman.com/) - GUI app for HTTP APIs. Create a new POST request, set the URL, content type to JSON, and put your book JSON in the body.
+- [HTTPie](https://httpie.io/) - Simple command line:
+
+    ```bash
+    http POST http://127.0.0.1:8000/add id=2 title="Dune" author="Herbert" price:=12.95
+    ```
+
+---
+
+## 4. **Check With a Follow-up GET**
+
+If your "add" endpoint appends new books to an in-memory `books` list,
+implement a GET endpoint (if you haven't already):
+
+```python
+@router.get('/list')
+def list_books():
+    return books
+```
+
+- Add a book with POST, then check `/list` to see if it appears.
+
+---
+
+### **Summary**
+
+**Your process:**
+1. Open `/docs` in browser, or send POST with curl/Postman.
+2. Add a book.
+3. Check response and/or `/list` to confirm it’s stored.
+
+---
+
+If you want more advanced: You can write real "unit" tests using `pytest` and FastAPI's `TestClient`, but for now, manual API testing is perfect!
+
+---
+
+**Let me know what you see when you try—and if it matches your expectations!**
